@@ -35,4 +35,12 @@ public class AccountDaoUnitTest {
 
 	}
 
+	@Test
+	public void searchAccountsOverBalance() {
+		AccountDao accountDao = new AccountDaoImpl();
+		Account account = Account.builder().withId(1L).withBalance(200D).build();
+		accountDao.create(account);
+		assertEquals(account.getBalance(), accountDao.searchAccountsOverBalance(199D).get(0).getBalance());
+	}
+
 }

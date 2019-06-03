@@ -15,4 +15,6 @@ public interface AccountDao {
 	void remove(Long id);
 
 	Account searchAccountByName(String name);
+
+	List<Account> searchAccountsOverBalance(Double balance);
 }

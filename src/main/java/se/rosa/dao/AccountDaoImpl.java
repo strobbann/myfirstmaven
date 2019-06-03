@@ -1,11 +1,13 @@
 package se.rosa.dao;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import se.rosa.domain.Account;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class AccountDaoImpl implements AccountDao {
 
@@ -37,10 +39,26 @@ public class AccountDaoImpl implements AccountDao {
 
 	@Override
 	public Account searchAccountByName(String name) {
+		return searchGetAccount(account -> name.equalsIgnoreCase(account.getName()));
+	}
+
+	@Override
+	public List<Account> searchAccountsOverBalance(Double balance) {
+		return searchGetList(account -> account.getBalance() >= balance);
+	}
+
+	public List<Account> searchGetList(Predicate<Account> predicate) {
 		return accounts.values().stream()
-				.filter(account ->  account.getName().equalsIgnoreCase(name))
+				.filter(predicate)
+				.collect(Collectors.toList());
+	}
+
+	public Account searchGetAccount(Predicate<Account> predicate) {
+		return accounts.values().stream()
+				.filter(predicate)
 				.findAny()
 				.map(account -> account)
-				.orElseThrow(IllegalArgumentException::new);
+				.orElseThrow(() -> new IllegalArgumentException("Cannot find the desired account"));
 	}
+
 }
