@@ -26,4 +26,13 @@ public class AccountDaoUnitTest {
 		assertNotEquals(account, accountDao.get(1L));
 	}
 
+	@Test
+	public void searchAccountsByName() {
+		AccountDao accountDao = new AccountDaoImpl();
+		Account account = Account.builder().withId(1L).withBalance(200D).withName("Kalle").build();
+		accountDao.create(account);
+		assertEquals(account.getName(), accountDao.searchAccountByName("Kalle").getName());
+
+	}
+
 }

@@ -4,10 +4,12 @@ public class Account {
 
 	private Long id;
 	private Double balance;
+	private String name;
 
-	private Account(Long id, Double balance) {
+	private Account(Long id, Double balance, String name) {
 		this.id = id;
 		this.balance = balance;
+		this.name = name;
 	}
 
 	public Long getId() {
@@ -18,6 +20,10 @@ public class Account {
 		return balance;
 	}
 
+	public String getName() {
+		return name;
+	}
+
 	public static Builder builder() {
 		return new Builder();
 	}
@@ -25,6 +31,7 @@ public class Account {
 	public static class Builder {
 		private Long id;
 		private Double balance;
+		private String name;
 
 		public Builder withId(Long id) {
 			this.id = id;
@@ -36,8 +43,13 @@ public class Account {
 			return this;
 		}
 
+		public Builder withName(String name) {
+			this.name = name;
+			return this;
+		}
+
 		public Account build() {
-			return new Account(id, balance);
+			return new Account(id, balance, name);
 		}
 	}
 
