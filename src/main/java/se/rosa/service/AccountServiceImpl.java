@@ -17,7 +17,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	public static synchronized AccountServiceImpl getInstance(AccountDao accountDao) {
-		if(accountService == null) {
+		if (accountService == null) {
 			return accountService = new AccountServiceImpl(accountDao);
 		} else {
 			return accountService;
@@ -28,7 +28,7 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public Double getBalance(Long id) {
 		Account account = accountDao.get(id);
-		if (account != null) {
+		if (accountChecker(account)) {
 			return account.getBalance();
 		}
 		return -1D;
@@ -37,15 +37,33 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public void withdraw(Long id, Double toWithdraw) {
 		Account account = accountDao.get(id);
-		if (isBalanceValid(account, toWithdraw)) {
-			Double balance = account.getBalance();
-			balance -= toWithdraw;
-			accountDao.update(Account.builder().withId(account.getId()).withBalance(balance).build());
-		} else {
-			throw new IllegalArgumentException("You cannot withdraw over you're balance");
+
+		if (accountChecker(account)) {
+			if (isBalanceValid(account, toWithdraw)) {
+				Double balance = account.getBalance();
+				balance -= toWithdraw;
+				accountDao.update(Account.builder().withId(account.getId()).withBalance(balance).build());
+			} else {
+				throw new IllegalArgumentException("You cannot withdraw over you're balance");
+			}
 		}
 
 
+	}
+
+	@Override
+	public void deposit(Long id, Integer amount) {
+		Account account = accountDao.get(id);
+		if(accountChecker(account)) {
+			double balance = account.getBalance();
+			balance += (double) amount;
+			accountDao.update(Account.builder().withId(account.getId()).withBalance(balance).build());
+		}
+	}
+
+	public boolean accountChecker(Account account) {
+		Optional<Account> accountOptional = Optional.of(account);
+		return accountOptional.isPresent();
 	}
 
 	public boolean isBalanceValid(Account account, Double toWithdraw) {

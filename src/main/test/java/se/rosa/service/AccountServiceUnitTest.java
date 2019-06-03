@@ -42,4 +42,11 @@ public class AccountServiceUnitTest {
 		accountService.withdraw(id, 200D);
 		assertEquals(Double.valueOf(0D), accountService.getBalance(id));
 	}
+
+	@Test
+	public void deposit() {
+		accountDao.create(Account.builder().withId(id).withBalance(200.33333D).build());
+		accountService.deposit(id, 200);
+		assertEquals(Double.valueOf(400.33333D), accountService.getBalance(id));
+	}
 }
