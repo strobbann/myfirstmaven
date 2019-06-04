@@ -17,7 +17,7 @@ public class AccountInterestServiceUnitTest {
 	public void calculateInterest() {
 		AccountDao dao = new AccountDaoImpl();
 		AccountInterestService service = new AccountInterestServiceImpl(dao);
-		dao.create(Account.builder().withId(1L).withBalance(1000d).build());
+		dao.create(Account.builder().withId(1L).withBalance(1000d).withName("JUNIT").build());
 		assertEquals(Double.valueOf(1040.4d), service.calculateInterest(1L,2,1.02));
 	}
 }

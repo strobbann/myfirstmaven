@@ -42,7 +42,11 @@ public class AccountServiceImpl implements AccountService {
 			if (isBalanceValid(account, toWithdraw)) {
 				Double balance = account.getBalance();
 				balance -= toWithdraw;
-				accountDao.update(Account.builder().withId(account.getId()).withBalance(balance).build());
+				accountDao.update(Account.builder()
+						.withId(account.getId())
+						.withBalance(balance)
+						.withName(account.getName())
+						.build());
 			} else {
 				throw new IllegalArgumentException("You cannot withdraw over you're balance");
 			}
@@ -57,7 +61,11 @@ public class AccountServiceImpl implements AccountService {
 		if(accountChecker(account)) {
 			double balance = account.getBalance();
 			balance += (double) amount;
-			accountDao.update(Account.builder().withId(account.getId()).withBalance(balance).build());
+			accountDao.update(Account.builder()
+					.withId(account.getId())
+					.withBalance(balance)
+					.withName(account.getName())
+					.build());
 		}
 	}
 

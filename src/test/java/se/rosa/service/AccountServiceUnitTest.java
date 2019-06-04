@@ -30,7 +30,7 @@ public class AccountServiceUnitTest {
 
 	@Test
 	public void getBalance() {
-		accountDao.create(Account.builder().withId(id).withBalance(200D).build());
+		accountDao.create(Account.builder().withId(id).withBalance(200D).withName("JUNIT").build());
 		AccountService service = AccountServiceImpl.getInstance(accountDao);
 		assertEquals(Double.valueOf(200D), service.getBalance(id));
 
@@ -38,14 +38,14 @@ public class AccountServiceUnitTest {
 
 	@Test
 	public void withdraw() {
-		accountDao.create(Account.builder().withId(id).withBalance(200D).build());
+		accountDao.create(Account.builder().withId(id).withBalance(200D).withName("JUNIT").build());
 		accountService.withdraw(id, 200D);
 		assertEquals(Double.valueOf(0D), accountService.getBalance(id));
 	}
 
 	@Test
 	public void deposit() {
-		accountDao.create(Account.builder().withId(id).withBalance(200.33333D).build());
+		accountDao.create(Account.builder().withId(id).withBalance(200.33333D).withName("JUNIT").build());
 		accountService.deposit(id, 200);
 		assertEquals(Double.valueOf(400.33333D), accountService.getBalance(id));
 	}

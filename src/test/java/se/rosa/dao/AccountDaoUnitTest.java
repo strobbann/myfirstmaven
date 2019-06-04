@@ -16,7 +16,7 @@ public class AccountDaoUnitTest {
 	@Test
 	public void create() {
 		AccountDao accountDao = new AccountDaoImpl();
-		Account account = Account.builder().withId(1L).withBalance(200D).build();
+		Account account = Account.builder().withId(1L).withBalance(200D).withName("JUNIT").build();
 		accountDao.create(account);
 		assertEquals(account, accountDao.get(1L));
 	}
@@ -24,7 +24,7 @@ public class AccountDaoUnitTest {
 	@Test
 	public void removeThrowsExceptionWhenNotFound() {
 		AccountDao accountDao = new AccountDaoImpl();
-		Account account = Account.builder().withId(1L).withBalance(200d).build();
+		Account account = Account.builder().withId(1L).withBalance(200d).withName("JUNIT").build();
 		accountDao.create(account);
 		assertEquals(account, accountDao.get(1L));
 		accountDao.remove(1L);
@@ -44,7 +44,7 @@ public class AccountDaoUnitTest {
 	@Test
 	public void searchAccountsOverBalance() {
 		AccountDao accountDao = new AccountDaoImpl();
-		Account account = Account.builder().withId(1L).withBalance(200D).build();
+		Account account = Account.builder().withId(1L).withBalance(200D).withName("JUNIT").build();
 		accountDao.create(account);
 		assertEquals(account.getBalance(), accountDao.searchAccountsOverBalance(199D).get(0).getBalance());
 	}

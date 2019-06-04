@@ -1,5 +1,7 @@
 package se.rosa.domain;
 
+import java.util.Objects;
+
 public class Account {
 
 	private Long id;
@@ -7,9 +9,9 @@ public class Account {
 	private String name;
 
 	private Account(Long id, Double balance, String name) {
-		this.id = id;
-		this.balance = balance;
-		this.name = name;
+		this.id = Objects.requireNonNull(id, "id cannot be null");
+		this.balance = Objects.requireNonNull(balance, "balance cannot be null");
+		this.name = Objects.requireNonNull(name, "name cannot be null");
 	}
 
 	public Long getId() {
