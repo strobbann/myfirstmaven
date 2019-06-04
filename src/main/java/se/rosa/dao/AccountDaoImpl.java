@@ -3,6 +3,8 @@ package se.rosa.dao;
 import se.rosa.domain.Account;
 
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -16,8 +18,10 @@ public class AccountDaoImpl implements AccountDao {
 
 	@Override
 	public void create(Account account) {
-		Optional<Account> accountOptional = Optional.of(account);
-		accountOptional.ifPresent(a -> accounts.put(a.getId(), a));
+		accountChecker(account, a -> {
+			accounts.put(a.getId(),a);
+			return a;
+		});
 	}
 
 	@Override
@@ -31,7 +35,7 @@ public class AccountDaoImpl implements AccountDao {
 	public void update(Account account) {
 		Objects.requireNonNull(account,"Account to update cannot be null");
 		if (accounts.containsKey(account.getId())) {
-			accounts.replace(account.getId(), account);
+			accounts.put(account.getId(), account);
 		}
 	}
 
@@ -51,6 +55,12 @@ public class AccountDaoImpl implements AccountDao {
 	@Override
 	public List<Account> searchAccountsOverBalance(Double balance) {
 		return searchGetList(account -> account.getBalance() >= balance);
+	}
+
+
+	public void accountChecker(Account account,Function<Account, Account> function) {
+		Optional<Account> accountOptional = Optional.of(account);
+		accountOptional.map(function).orElseThrow(() -> new IllegalArgumentException("Account does not exist"));
 	}
 
 	public List<Account> searchGetList(Predicate<Account> predicate) {
